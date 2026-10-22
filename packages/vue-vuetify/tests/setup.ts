@@ -1,3 +1,11 @@
+import { afterEach } from 'vitest';
+import { enableAutoUnmount } from '@vue/test-utils';
+
+// Specs mount into document.body and call clearAllIds() before each mount, so
+// unmount after each test: otherwise the previous form stays in the document
+// with the same ids as the next one.
+enableAutoUnmount(afterEach);
+
 // Mock the visualViewport API for testing purposes
 if (!window.visualViewport) {
   window.visualViewport = {
