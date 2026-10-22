@@ -27,11 +27,10 @@ import type { ErrorObject } from 'ajv';
 import { JsonSchema } from '../../src/models';
 import {
   compiledAjvValidator,
-  createAjvValidator,
   issuesToErrors,
   ValidationIssue,
 } from '../../src/util/formValidator';
-import { createAjv } from '../../src/util/validator';
+import { createAjv, createAjvValidator } from '../../src/util/validator';
 
 const schema: JsonSchema = {
   type: 'object',

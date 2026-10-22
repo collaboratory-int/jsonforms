@@ -22,6 +22,26 @@ See the official [documentation](https://jsonforms.io/) for more information.
 
 Check <https://www.npmjs.com/search?q=%40jsonforms> for all published JSON Forms packages.
 
+## Using JSON Forms without Ajv
+
+By default, JSON Forms validates with [Ajv](https://ajv.js.org/), which compiles schemas into JavaScript at runtime.
+This requires `'unsafe-eval'` in a Content Security Policy, and Ajv and `ajv-formats` are part of every bundle.
+
+If you use the core package directly and validate with a Form Validator of your own, import from `@jsonforms/core/core-only` instead.
+It exports everything `@jsonforms/core` does except `createAjv`, `createAjvValidator` and `validate`, and never loads Ajv:
+
+```ts
+import { Actions, coreReducer } from '@jsonforms/core/core-only';
+
+const state = coreReducer(
+  undefined,
+  Actions.init(data, schema, uischema, { validator: myFormValidatorFactory })
+);
+```
+
+Without Ajv, JSON Forms needs a `validator` or an `ajv` instance in the init options, or `validationMode: 'NoValidation'`; otherwise `init` throws.
+Both entry points share one copy of the core code, so importing from both does not duplicate it.
+
 ## License
 
 The JSON Forms project is licensed under the MIT License. See the [LICENSE file](https://github.com/eclipsesource/jsonforms/blob/master/LICENSE) for more information.

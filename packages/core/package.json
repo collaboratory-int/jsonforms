@@ -19,7 +19,8 @@
   },
   "files": [
     "lib",
-    "src"
+    "src",
+    "core-only"
   ],
   "keywords": [
     "form",

@@ -45,9 +45,9 @@ import { JsonFormsCore, Reducer, ValidationMode } from '../store';
 import type Ajv from 'ajv';
 import type { ErrorObject } from 'ajv';
 import isFunction from 'lodash/isFunction';
-import { createAjv } from '../util';
+import { createDefaultAjv } from '../util/ajvDefault';
 import {
-  createAjvValidator,
+  compiledAjvValidator,
   FormValidator,
   FormValidatorFactory,
   issuesToErrors,
@@ -122,7 +122,7 @@ export const getOrCreateAjv = (
   if (state.ajv) {
     return state.ajv;
   }
-  return createDefault ? createAjv() : undefined;
+  return createDefault ? createDefaultAjv() : undefined;
 };
 
 const hasAjvOption = (option: any): option is InitActionOptions => {
@@ -158,8 +158,20 @@ const createValidator = (
   if (validationMode === 'NoValidation') {
     return undefined;
   }
-  return (validatorFactory ?? createAjvValidator(ajv))(schema);
+  if (validatorFactory) {
+    return validatorFactory(schema);
+  }
+  const thisAjv = ajv ?? createDefaultAjv();
+  if (thisAjv === undefined) {
+    throw new Error(NO_VALIDATOR);
+  }
+  return compiledAjvValidator(thisAjv.compile(schema));
 };
+
+const NO_VALIDATOR =
+  'JSON Forms has no validator: Ajv is not loaded when importing from ' +
+  "'@jsonforms/core/core-only'. Pass a `validator` or `ajv` option, or set " +
+  "`validationMode: 'NoValidation'`.";
 
 const validate = (
   validator: FormValidator | undefined,

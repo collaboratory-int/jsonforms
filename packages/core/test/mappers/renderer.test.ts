@@ -65,7 +65,8 @@ import {
   mapStateToOneOfEnumControlProps,
   mapStateToOneOfProps,
 } from '../../src/mappers';
-import { clearAllIds, convertDateToString, createAjv } from '../../src/util';
+import { clearAllIds, convertDateToString } from '../../src/util';
+import { createAjv } from '../../src/util/validator';
 import { rankWith } from '../../src';
 
 const middlewares: Redux.Middleware[] = [];

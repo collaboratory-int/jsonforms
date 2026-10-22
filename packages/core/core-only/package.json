@@ -1,0 +1,7 @@
+{
+  "name": "@jsonforms/core/core-only",
+  "private": true,
+  "main": "../lib/jsonforms-core-only.cjs.js",
+  "module": "../lib/jsonforms-core-only.esm.js",
+  "typings": "../lib/core-only.d.ts"
+}

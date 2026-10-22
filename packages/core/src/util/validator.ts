@@ -22,9 +22,15 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
+/**
+ * The Ajv module: the only one in core that imports Ajv at runtime. Only the
+ * `@jsonforms/core` entry point loads it; `@jsonforms/core/core-only` does not.
+ */
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import type { ErrorObject, Options, ValidateFunction } from 'ajv';
+import { setDefaultAjvFactory } from './ajvDefault';
+import { compiledAjvValidator, FormValidatorFactory } from './formValidator';
 
 export const createAjv = (options?: Options) => {
   const ajv = new Ajv({
@@ -37,6 +43,15 @@ export const createAjv = (options?: Options) => {
   addFormats(ajv);
   return ajv;
 };
+
+/** Creates Form Validators backed by the given Ajv instance. */
+export const createAjvValidator =
+  (ajv: Ajv = createAjv()): FormValidatorFactory =>
+  (schema) =>
+    compiledAjvValidator(ajv.compile(schema));
+
+// Loading this module makes Ajv the default validator.
+setDefaultAjvFactory(() => createAjv());
 
 export const validate = (
   validator: ValidateFunction | undefined,

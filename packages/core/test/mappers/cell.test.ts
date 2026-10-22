@@ -25,7 +25,8 @@
 import test from 'ava';
 import * as _ from 'lodash';
 import * as Redux from 'redux';
-import { clearAllIds, createAjv, validate } from '../../src/util';
+import { clearAllIds } from '../../src/util';
+import { createAjv, validate } from '../../src/util/validator';
 import { UPDATE_DATA, UpdateAction } from '../../src/actions';
 import configureStore from 'redux-mock-store';
 import { JsonFormsState } from '../../src/store';

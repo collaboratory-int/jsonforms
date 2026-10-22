@@ -22,10 +22,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import type Ajv from 'ajv';
 import type { ErrorObject, ValidateFunction } from 'ajv';
 import type { JsonSchema } from '../models';
-import { createAjv } from './validator';
 import { decode } from './path';
 
 /** A validation finding, addressed to a data location by JSON Pointer. */
@@ -69,12 +67,6 @@ export const compiledAjvValidator = (
     return ajvErrorsToIssues(validateFn.errors);
   },
 });
-
-/** Creates Form Validators backed by the given Ajv instance. */
-export const createAjvValidator =
-  (ajv: Ajv = createAjv()): FormValidatorFactory =>
-  (schema) =>
-    compiledAjvValidator(ajv.compile(schema));
 
 /** Converts issues to the Ajv error objects stored in the state. */
 export const issuesToErrors = (
